@@ -7,9 +7,23 @@
 <body>
     <h1>🎉 我的第一个部署到Vercel的项目</h1>
     <p>当前时间：<span id="time"></span></p>
-    <button onclick="alert('你好，Vercel！')">点我</button>
+    <!-- 流式输出演示 -->
+    <div style="margin-top: 40px; border-top: 1px solid #ccc; padding-top: 20px;">
+        <h2>📝 流式输出演示</h2>
+        <button onclick="startStream()">开始流式输出</button>
+        <div id="streamOutput" style="border:1px solid #ddd; margin-top:10px; padding:10px; min-height:100px; font-family: monospace;"></div>
+    </div>
     <script>
-        document.getElementById('time').innerText = new Date().toLocaleString();
+        async function startStream() {
+            const output = document.getElementById('streamOutput');
+            output.innerText = '开始流式输出...';
+            const sentence = '🎉 这是一段流式输出的文字！你可以看到它一个字一个字地出现，就像有人在现场打字一样。这种体验会让用户感觉更自然、更流畅。'
+            for (let i = 0; i < sentence.length; i++) {
+                output.innerText = sentence.substring(0, i + 1);
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+            output.innerText = '流式输出完成！';
+        }
     </script>
 </body>
 </html>
