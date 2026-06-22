@@ -25,10 +25,41 @@ module.exports = async function handler(req, res) {
       body: JSON.stringify({
         model: 'deepseek-chat',
         messages: [{ role: 'user', content: message }],
+        stream: true,
       }),
     });
 
-    const data = await response.json();
+    // const data = await response.json();
+    // 流失输出
+    const reader = response.body.getReader()
+    const decoder = new TextDecoder('utf-8')
+    let reply = ''
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+      // 解析二进制数据为文本
+      const chunk = decoder.decode(value, { stream: true })
+      // 按行分割（sse格式要求）
+      const lines = chunk.split('\n')
+      for (const line of lines) {
+        if (line.startsWith('data:')) {
+          const data = line.substring(5)
+          if (data === '[DONE]') {
+            break
+          }
+          try {
+            const json = JSON.parse(data)
+            const content = json.choices[0].delta.content
+            if (content) {
+              reply += content
+              updateUI(reply)
+            }
+          } catch (error) {
+            console.error('解析JSON失败:', error)
+          }
+        }
+      }
+    }
 
     if (!response.ok) {
       const apiError =
@@ -36,7 +67,6 @@ module.exports = async function handler(req, res) {
       return res.status(response.status).json({ error: apiError });
     }
 
-    const reply = data?.choices?.[0]?.message?.content;
     if (!reply) {
       return res.status(502).json({ error: 'DeepSeek 返回了空内容' });
     }
@@ -46,3 +76,10 @@ module.exports = async function handler(req, res) {
     res.status(500).json({ error: error.message });
   }
 };
+
+// ui更新
+function updateUI(content) {
+  const aiReply = document.getElementById('aiReply')
+  aiReply.textContent = content
+  aiReply.scrollTop = aiReply.scrollHeight
+}
