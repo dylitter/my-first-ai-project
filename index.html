@@ -17,7 +17,7 @@
         async function startStream() {
             const output = document.getElementById('streamOutput');
             output.innerText = '开始流式输出...';
-            const sentence = '🎉 这是一段流式输出的文字！你可以看到它一个字一个字地出现，就像有人在现场打字一样。这种体验会让用户感觉更自然、更流畅。'
+            const sentence = '🎉 ###这是一段流式输出的文字！你可以看到它一个字一个字地出现，就像有人在现场打字一样。这种体验会让用户感觉更自然、更流畅。'
             for (let i = 0; i < sentence.length; i++) {
                 output.innerText = sentence.substring(0, i + 1);
                 await new Promise(resolve => setTimeout(resolve, 100));
