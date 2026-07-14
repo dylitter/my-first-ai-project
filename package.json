@@ -1,0 +1,25 @@
+{
+  "name": "my-first-ai-project",
+  "version": "1.0.0",
+  "description": "目的：成为一个 AI 加持的高级前端工程师（AI Native Frontend Engineer） 需求：业务能力 + 工程能力 + AI使用能力 + 全栈能力 真正值钱的是： 需求理解",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dylitter/my-first-ai-project.git"
+  },
+  "keywords": [
+    "AI"
+  ],
+  "author": "DY",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dylitter/my-first-ai-project/issues"
+  },
+  "homepage": "https://github.com/dylitter/my-first-ai-project#readme",
+  "devDependencies": {
+    "mcp-lanhu": "^2.0.1"
+  }
+}

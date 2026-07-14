@@ -1,4 +1,29 @@
 // api/chat.js - Vercel Serverless Function
+
+/**
+ * Minimal request shape used by the Vercel serverless chat endpoint.
+ *
+ * @typedef {object} ChatRequest
+ * @property {string} method - HTTP method for the incoming request.
+ * @property {{ message?: string }} [body] - JSON payload submitted by the client.
+ */
+
+/**
+ * Minimal response shape used by the Vercel serverless chat endpoint.
+ *
+ * @typedef {object} ChatResponse
+ * @property {(statusCode: number) => ChatResponse} status - Sets the HTTP status code.
+ * @property {(body: { error?: string, reply?: string }) => void} json - Sends a JSON response.
+ */
+
+/**
+ * Proxies a chat prompt to the DeepSeek chat completion API and returns the
+ * accumulated streamed reply.
+ *
+ * @param {ChatRequest} req - Incoming Vercel request.
+ * @param {ChatResponse} res - Outgoing Vercel response.
+ * @returns {Promise<void>}
+ */
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -77,7 +102,12 @@ module.exports = async function handler(req, res) {
   }
 };
 
-// ui更新
+/**
+ * Updates the chat reply container with the latest streamed content.
+ *
+ * @param {string} content - Full reply text accumulated from the stream.
+ * @returns {void}
+ */
 function updateUI(content) {
   const aiReply = document.getElementById('aiReply')
   aiReply.textContent = content

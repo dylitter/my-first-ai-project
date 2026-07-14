@@ -1,0 +1,117 @@
+<view class="order-page">
+  <view class="mock-nav">
+    <view class="status-bar">
+      <text class="status-time">9:41</text>
+      <view class="status-icons">
+        <view class="signal"></view>
+        <view class="wifi"></view>
+        <view class="battery">
+          <view class="battery-inner"></view>
+        </view>
+      </view>
+    </view>
+    <view class="nav-bar">
+      <view class="back-icon"></view>
+      <text class="nav-title">订单详情</text>
+    </view>
+  </view>
+
+  <scroll-view class="content" scroll-y>
+    <view class="status-card {{status.theme}}">
+      <text class="status-title">{{status.title}}</text>
+      <text a:if="{{status.countdown}}" class="countdown">{{status.countdown}}</text>
+      <text class="status-desc">{{status.desc}}</text>
+      <button
+        a:if="{{status.heroButton}}"
+        class="drink-btn"
+        hover-class="none"
+        onTap="handleDrink"
+      >
+        {{status.heroButton}}
+      </button>
+    </view>
+
+    <view class="card goods-card">
+      <view class="goods-row">
+        <image class="goods-cover" src="{{order.goods.image}}" mode="aspectFill" />
+        <view class="goods-info">
+          <text class="goods-name">{{order.goods.name}}</text>
+          <text class="goods-desc">{{order.goods.desc}}</text>
+          <text class="goods-count">x{{order.goods.count}}</text>
+        </view>
+        <view class="price-box">
+          <text class="origin-price">¥{{order.goods.originPrice}}</text>
+          <text class="sale-price">¥{{order.goods.salePrice}}</text>
+        </view>
+      </view>
+
+      <view class="include-box">
+        <view class="include-left">
+          <text class="include-title">内含</text>
+          <text class="include-name">{{order.coupon.name}}</text>
+        </view>
+        <view class="include-right">
+          <text class="include-title">数量</text>
+          <text class="include-name">x{{order.coupon.count}}</text>
+        </view>
+      </view>
+
+      <view class="dash-line"></view>
+
+      <view class="amount-row">
+        <text>{{status.amountLabel}}</text>
+        <text>¥{{order.payAmount}}</text>
+      </view>
+    </view>
+
+    <view a:if="{{status.showUsage}}" class="card usage-card">
+      <view class="usage-header">
+        <text class="section-title">使用详情</text>
+        <text class="settlement-tag">使用最优结算方案</text>
+      </view>
+      <view class="usage-row">
+        <view class="usage-label">
+          <text>已用次数</text>
+          <text class="usage-tip">（待支付订单占用次卡的券也会视为已用）</text>
+        </view>
+        <text class="usage-value">{{order.usedTimes}}</text>
+      </view>
+      <view class="usage-row">
+        <text>剩余次数</text>
+        <text class="usage-value">{{order.leftTimes}}</text>
+      </view>
+    </view>
+
+    <view class="card detail-card">
+      <view a:for="{{detailRows}}" a:key="label" class="detail-row">
+        <text class="detail-label">{{item.label}}</text>
+        <view class="detail-value-wrap">
+          <text class="detail-value">{{item.value}}</text>
+          <button
+            a:if="{{item.copyable}}"
+            class="copy-btn"
+            hover-class="none"
+            data-value="{{item.value}}"
+            onTap="handleCopy"
+          >
+            复制
+          </button>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="footer">
+    <block a:for="{{status.footerActions}}" a:key="text">
+      <button
+        class="footer-btn {{item.type}}"
+        hover-class="none"
+        data-action="{{item.action}}"
+        onTap="handleFooterAction"
+      >
+        {{item.text}}
+      </button>
+    </block>
+    <view class="home-indicator"></view>
+  </view>
+</view>
